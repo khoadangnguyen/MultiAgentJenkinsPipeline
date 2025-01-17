@@ -1,0 +1,11 @@
+.idea
+agent/jenkins_linux_agent_data/caches/
+agent/jenkins_linux_agent_data/remoting/
+agent/jenkins_linux_agent_data/workspace/
+agent/jenkins_linux_agent_data/linux-agent-secret.txt
+agent/jenkins_window_agent_data/caches/
+agent/jenkins_window_agent_data/remoting/
+agent/jenkins_window_agent_data/workspace/
+agent/jenkins_window_agent_data/workspace/pipeline-demo
+agent/jenkins_window_agent_data/window-agent-secret.txt
+controller/jenkins_data

@@ -1,0 +1,16 @@
+services:
+  jenkins-controller:
+    image: jenkins/jenkins:2.493
+    container_name: jenkins-controller
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - ./jenkins_data:/var/jenkins_home
+    networks:
+      - jenkins-network
+
+networks:
+  jenkins-network:
+    name: jenkins-network
+    driver: bridge

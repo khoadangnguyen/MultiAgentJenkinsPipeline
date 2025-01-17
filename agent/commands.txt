@@ -1,0 +1,49 @@
+/*
+    Node creation and connection
+*/
+Go Manage Jenkins -> Nodes
+Click on New Node
+In Node name, type "linux-agent", and select Permanent Agent
+Then click Create
+In executors, increase to 2
+In Remote root directory, enter "/home/jenkins/agent"
+In Labels, enter "linux"
+In Usage, select "Only build jobs with label expressions matching this node"
+In Launch method, select "Launch agent by connecting it to the controller"
+In Availability, select "Bring this agent online when in demand, and take offline when idle"
+In In demand delay, enter 1
+In Idle delay, enter 5
+
+Click on New Node
+In Node name, type "window-agent", and select Permanent Agent
+In Type, select Copy Existing Node, then type "linux-agent", and select it
+In Number of executors, decrease to 1
+In Labels, change to "window"
+Keep everything else, the same
+
+Click on linux-agent node, and copy secret into linux-agent-secret.txt
+Click on window-agent node, and copy secret into window-agent-secret.txt
+
+Change folder to /agent, and execute docker-compose
+cd agent/
+docker-compose up -d
+
+Check log for Connected, and check Jenkins' Nodes page to status
+
+
+/*
+    pipeline job creation
+*/
+On Jenkins, click on New Item, enter "pipeline-demo", and choose Pipeline
+Under Pipeline section, in Definition, choose "Pipeline script from SCM"
+Under SCM, choose "Git"
+Open https://github.com/khoadangnguyen/declarative-pipeline-demo, copy SSH link of this repo
+Under Credentials, select "admin"
+Under Branches to build, under Branch Specifier, change to */main
+Then Apply and Save
+
+Go to Manage Jenkins, go to Security
+Under Git Host Key Verification Configuration, and under Host Key Verification Strategy, choose "Accept first connection"
+Apply and Save
+
+Open pipeline-demo, and click "Build Now"

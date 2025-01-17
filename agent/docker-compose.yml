@@ -1,0 +1,47 @@
+services:
+  jenkins-linux-agent:
+    image: jenkins/agent:bookworm-jdk21
+    container_name: jenkins-linux-agent
+    volumes:
+      - ./jenkins_linux_agent_data:/home/jenkins/agent
+    networks:
+      - jenkins-network
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+
+    # 172.22.0.2 might not be the case sometimes
+    # as Jenkins controller might have different assigned ip
+    # /home/jenkins/agent/linux-agent-secret.txt also contains different value
+    # depends on the secret created on Jenkins UI for creating node
+    command: >
+      java -jar /usr/share/jenkins/agent.jar
+      -url http://172.22.0.2:8080/
+      -secret @/home/jenkins/agent/linux-agent-secret.txt
+      -name "linux-agent" -webSocket -workDir "/home/jenkins/agent"
+
+  jenkins-window-agent1:
+    image: jenkins/agent:bookworm-jdk21
+    container_name: jenkins-window-agent
+    volumes:
+      - ./jenkins_window_agent_data:/home/jenkins/agent
+    networks:
+      - jenkins-network
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+    # 172.22.0.2 might not be the case sometimes
+    # as Jenkins controller might have different assigned ip
+    # /home/jenkins/agent/window-agent-secret.txt also contains different value
+    # depends on the secret created on Jenkins UI for creating node
+    command: >
+      java -jar /usr/share/jenkins/agent.jar
+      -url http://172.22.0.2:8080/
+      -secret @/home/jenkins/agent/window-agent-secret.txt
+      -name "window-agent" -webSocket -workDir "/home/jenkins/agent"
+
+networks:
+  jenkins-network:
+    external: true

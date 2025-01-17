@@ -1,0 +1,47 @@
+
+cd controller/
+docker-compose up -d
+
+After Jenkins is up and running, use the created password and use install suggested plugins
+
+Access Bash shell of jenkins-controller
+docker exec -it jenkins-controller /bin/bash
+
+Go to jenkins's home folder
+cd var/jenkins_home/
+
+Generate SSH Key Pair with admin's email
+ssh-keygen -t rsa -b 4096 -C "admin@localhost.com"
+
+Use default path to store private and public key
+/var/jenkins_home/.ssh/id_rsa
+
+Use empty passphrase
+
+Go to Jenkins, Manage Jenkins -> Manage Credentials -> domain -> Add credentials
+In Kind, select SSH Username with private key
+In Scope, select Global
+Leave ID empty so that Jenkins automatically create ID
+Username, enter "admin"
+Open SSH private key
+cat /var/jenkins_home/.ssh/id_rsa
+
+then copy and paste into Private Key section
+Passphrase, leave empty to match with empty passphrase when being asked in creating SSH Key Pair
+
+Go to github.com, open SSH and GPG keys, click on New SSH Key
+Enter title (relates to Jenkins' admin)
+Open SSH public key
+cat /var/jenkins_home/.ssh/id_rsa.pub
+
+Copy public key and paste into Key text field
+
+Execute on jenkins-controller Bash shell to verify SSH connection with GitHub
+ssh -T git@github.com
+
+When being asked
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
+Type in "yes"
+
+If success, below text will show
+Hi [name] You've successfully authenticated, but GitHub does not provide shell access.
